@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Técnico Claro PYME</title>
+    <style>
+        :root {
+            --claro-red: #ef3829;
+            --claro-dark: #1a1a1a;
+            --gray-light: #f8f9fa;
+            --gray-border: #e0e0e0;
+            --text-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--claro-red);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Buscador / Asistente Paso a Paso */
+        .search-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .search-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--claro-dark);
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--gray-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--claro-red);
+        }
+
+        /* Pasos del Wizard */
+        .wizard-steps {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .wizard-btn {
+            background-color: var(--gray-light);
+            border: 1px solid var(--gray-border);
+            padding: 0.6rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .wizard-btn:hover, .wizard-btn.active {
+            background-color: var(--claro-red);
+            color: white;
+            border-color: var(--claro-red);
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--claro-red);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        /* Grid de Productos */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-left: 5px solid var(--claro-red);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .product-badge {
+            background-color: var(--claro-dark);
+            color: white;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            align-self: flex-start;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            color: var(--claro-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-details {
+            font-size: 0.9rem;
+            background: var(--gray-light);
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .tech-details ul {
+            list-style: none;
+        }
+
+        .tech-details li {
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .tech-details li span {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Soporte Comercial y Técnico — Claro PYME</h1>
+        <p>Encuentra de forma guiada la información técnica de nuestros servicios</p>
+    </header>
+
+    <main>
+        <section class="search-container">
+            <div class="search-title" id="wizard-instruction">Paso 1: Selecciona el tipo de servicio que buscas</div>
+            
+            <div class="wizard-steps" id="wizard-options">
+                </div>
+
+            <div class="input-group">
+                <input type="text" id="search-input" placeholder="O escribe directamente lo que buscas (ej: Fibra, IP Fija, Minutos)...">
+                <button class="reset-btn" id="reset-filter" style="display:none;">Ver todo</button>
+            </div>
+        </section>
+
+        <section class="products-grid" id="products-container">
+            </section>
+    </main>
+
+    <script>
+        // Base de datos técnica de Claro PYME
+        const productsData = [
+            {
+                id: 1,
+                name: "Internet Fibra Óptica PYME 400 Megas",
+                category: "internet",
+                subcategory: "fibra",
+                features: {
+                    "Velocidad de Bajada": "400 Mbps",
+                    "Velocidad de Subida": "200 Mbps (Simetría opcional)",
+                    "Tecnología": "FTTH (Fibra a la oficina)",
+                    "IP Pública": "Dinámica (IP Fija adicionable)",
+                    "Equipamiento": "Router Wi-Fi Dual Band (2.4Ghz y 5Ghz)"
+                }
+            },
+            {
+                id: 2,
+                name: "Internet Fibra Óptica PYME 800 Megas (Alta Demanda)",
+                category: "internet",
+                subcategory: "fibra",
+                features: {
+                    "Velocidad de Bajada": "800 Mbps",
+                    "Velocidad de Subida": "400 Mbps",
+                    "Tecnología": "FTTH Profesional",
+                    "Garantía de Servicio": "SLA de conectividad 99.5%",
+                    "Incluye": "Soporte Técnico PYME 24/7 preferencial"
+                }
+            },
+            {
+                id: 3,
+                name: "Telefonía Fija IP PYME — Plan Ilimitado",
+                category: "fijo",
+                subcategory: "telefonia",
+                features: {
+                    "Líneas Incluidas": "1 Línea Digital IP",
+                    "Llamadas Locales/Nacionales": "Ilimitadas a redes fijas",
+                    "Minutos a Móviles": "300 minutos mensuales",
+                    "Servicios Digitales": "Identificador, transferencia y buzón de voz",
+                    "Conexión": "A través de Router de Internet Claro"
+                }
+            },
+            {
+                id: 4,
+                name: "Plan Móvil PYME Pro Max",
+                category: "movil",
+                subcategory: "planes",
+                features: {
+                    "Gigas Incluidos": "Libres / Sin reducción extrema",
+                    "Red": "5G Claro Ultra Velocidad",
+                    "Minutos": "Ilimitados a todo destino nacional",
+                    "SMS": "500 SMS mensuales",
+                    "Roaming": "Incluye Gigas en países seleccionados de América"
+                }
+            },
+            {
+                id: 5,
+                name: "Banda Ancha Móvil (BAM) PYME 5G",
+                category: "movil",
+                subcategory: "datos",
+                features: {
+                    "Cuota de navegación": "200 GB libres",
+                    "Dispositivo": "Router Móvil Portátil Alcatel / Huawei",
+                    "Red": "4G LTE / 5G habilitado",
+                    "Uso recomendado": "Fuerzas de venta, teletrabajo en terreno"
+                }
+            },
+            {
+                id: 6,
+                name: "Enlace Dedicado Claro Empresas",
+                category: "servicios corporativos",
+                subcategory: "enlaces",
+                features: {
+                    "Ancho de Banda": "Desde 10 Mbps hasta 1 Gbps simétricos",
+                    "Disponibilidad": "SLA 99.9%",
+                    "Monitoreo": "Proactivo desde el NOC Claro 24/7",
+                    "Direccionamiento": "Bloque de IP Fijas públicas (/29 o /28)"
+                }
+            },
+            {
+                id: 7,
+                name: "Central Virtual Claro (Telefonía Cloud)",
+                category: "fijo",
+                subcategory: "central",
+                features: {
+                    "Tecnología": "Nube (No requiere hardware físico)",
+                    "Anexos": "Escalable desde 3 anexos",
+                    "Funciones": "IVR (Menú de bienvenida), horarios de atención",
+                    "Movilidad": "App para contestar la línea fija en el celular"
+                }
+            }
+        ];
+
+        // Estado del Buscador Paso a Paso (Wizard)
+        let currentStep = 1;
+        let selectedCategory = "";
+
+        // Elementos del DOM
+        const wizardInstruction = document.getElementById('wizard-instruction');
+        const wizardOptions = document.getElementById('wizard-options');
+        const searchInput = document.getElementById('search-input');
+        const resetFilterBtn = document.getElementById('reset-filter');
+        const productsContainer = document.getElementById('products-container');
+
+        // Inicializar la aplicación
+        function init() {
+            renderWizardStep1();
+            renderProducts(productsData);
+            
+            // Evento buscador de texto libre
+            searchInput.addEventListener('input', (e) => {
+                const text = e.target.value.toLowerCase();
+                if(text.length > 0) resetFilterBtn.style.display = "inline-block";
+                
+                const filtered = productsData.filter(p => 
+                    p.name.toLowerCase().includes(text) || 
+                    p.category.toLowerCase().includes(text) ||
+                    Object.values(p.features).some(val => val.toLowerCase().includes(text))
+                );
+                renderProducts(filtered);
+            });
+
+            // Botón reset
+            resetFilterBtn.addEventListener('click', () => {
+                searchInput.value = "";
+                selectedCategory = "";
+                currentStep = 1;
+                resetFilterBtn.style.display = "none";
+                renderWizardStep1();
+                renderProducts(productsData);
+            });
+        }
+
+        // Renderizar el paso 1 (Categorías Principales)
+        function renderWizardStep1() {
+            wizardInstruction.innerText = "Paso 1: Selecciona la línea de negocio principal:";
+            const categories = [...new Set(productsData.map(p => p.category))];
+            
+            wizardOptions.innerHTML = categories.map(cat => `
+                <button class="wizard-btn" onclick="selectCategory('${cat}')">${cat.toUpperCase()}</button>
+            `).join('');
+        }
+
+        // Manejar selección del Paso 1 e ir al Paso 2
+        function selectCategory(cat) {
+            selectedCategory = cat;
+            currentStep = 2;
+            resetFilterBtn.style.display = "inline-block";
+
+            // Filtrar productos de esta categoría
+            const filteredProducts = productsData.filter(p => p.category === cat);
+            renderProducts(filteredProducts);
+
+            // Generar subcategorías para el paso 2
+            const subcategories = [...new Set(filteredProducts.map(p => p.subcategory))];
+            
+            wizardInstruction.innerText = `Paso 2: Especifica qué tipo de solución en ${cat.toUpperCase()} necesitas:`;
+            wizardOptions.innerHTML = subcategories.map(sub => `
+                <button class="wizard-btn" onclick="selectSubcategory('${sub}')">${sub.toUpperCase()}</button>
+            `).join('') + `<button class="wizard-btn" style="background:#ddd" onclick="goBackToStep1()">← Volver</button>`;
+        }
+
+        // Manejar selección final (Paso 2)
+        function selectSubcategory(sub) {
+            const finalFilter = productsData.filter(p => p.category === selectedCategory && p.subcategory === sub);
+            renderProducts(finalFilter);
+            wizardInstruction.innerText = `Mostrando resultados específicos para: ${selectedCategory.toUpperCase()} > ${sub.toUpperCase()}`;
+        }
+
+        function goBackToStep1() {
+            currentStep = 1;
+            selectedCategory = "";
+            renderWizardStep1();
+            renderProducts(productsData);
+        }
+
+        // Renderizar Tarjetas de Productos
+        function renderProducts(products) {
+            if (products.length === 0) {
+                productsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No encontramos especificaciones exactas</h3>
+                        <p>Intenta buscando con palabras clave como "Megas", "5G", "IP" o limpia los filtros.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            productsContainer.innerHTML = products.map(prod => {
+                // Generar filas de la tabla técnica
+                let techRows = "";
+                for (const [key, value] of Object.entries(prod.features)) {
+                    techRows += `<li><span>${key}:</span> ${value}</li>`;
+                }
+
+                return `
+                    <div class="product-card">
+                        <div>
+                            <span class="product-badge">${prod.category}</span>
+                            <h2 class="product-title">${prod.name}</h2>
+                            <div class="tech-details">
+                                <ul>
+                                    ${techRows}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = init;
+    </script>
+</body>
+</html>
