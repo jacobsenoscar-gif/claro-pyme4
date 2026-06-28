@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Técnico Claro PYME</title>
+    <style>
+        :root {
+            --claro-red: #ef3829;
+            --claro-dark: #1a1a1a;
+            --gray-light: #f8f9fa;
+            --gray-border: #e0e0e0;
+            --text-color: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-light);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background-color: var(--claro-red);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 0.3rem;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* ===== WIZARD SEARCH ===== */
+        .search-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .search-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--claro-dark);
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.8rem;
+            border: 1px solid var(--gray-border);
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--claro-red);
+        }
+
+        /* ===== WIZARD BUTTONS ===== */
+        .wizard-steps {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .wizard-btn {
+            background-color: var(--gray-light);
+            border: 1px solid var(--gray-border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            transition: all 0.2s ease;
+        }
+
+        .wizard-btn:hover,
+        .wizard-btn.active {
+            background-color: var(--claro-red);
+            color: white;
+            border-color: var(--claro-red);
+        }
+
+        .wizard-btn.back-btn {
+            background-color: #ddd;
+            color: #444;
+        }
+
+        .wizard-btn.back-btn:hover {
+            background-color: #bbb;
+            border-color: #bbb;
+            color: #222;
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--claro-red);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            align-self: center;
+            padding: 0.4rem 0;
+        }
+
+        /* ===== RESULT COUNT ===== */
+        .result-count {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== PRODUCTS GRID ===== */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-left: 5px solid var(--claro-red);
+            border-radius: 4px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .product-badge {
+            background-color: var(--claro-dark);
+            color: white;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            align-self: flex-start;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .product-title {
+            font-size: 1.15rem;
+            color: var(--claro-dark);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .tech-details {
+            font-size: 0.88rem;
+            background: var(--gray-light);
+            padding: 0.8rem;
+            border-radius: 4px;
+            margin-top: 0.8rem;
+        }
+
+        .tech-details ul {
+            list-style: none;
+        }
+
+        .tech-details li {
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tech-details li span.label {
+            font-weight: 600;
+            color: #555;
+            flex-shrink: 0;
+        }
+
+        .tech-details li span.value {
+            color: var(--text-color);
+            text-align: right;
+        }
+
+        /* ===== CONTACT BUTTON ===== */
+        .contact-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--claro-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .contact-btn:hover {
+            background-color: #c72f1f;
+        }
+
+        /* ===== NO RESULTS ===== */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 8px;
+            color: #777;
+        }
+
+        .no-results h3 {
+            margin-bottom: 0.5rem;
+            color: #444;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.3rem; }
+            .search-container { padding: 1.2rem; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Soporte Comercial y Técnico — Claro PYME</h1>
+    <p>Encuentra de forma guiada la información técnica de nuestros servicios</p>
+</header>
+
+<main>
+    <section class="search-container">
+        <div class="search-title" id="wizard-instruction">Paso 1: Selecciona la línea de negocio principal</div>
+
+        <div class="wizard-steps" id="wizard-options"></div>
+
+        <div class="input-group">
+            <input type="text" id="search-input" placeholder="O escribe directamente: Fibra, IP Fija, Minutos, 5G…">
+            <button class="reset-btn" id="reset-filter" style="display:none;">Ver todo</button>
+        </div>
+    </section>
+
+    <div class="result-count" id="result-count"></div>
+
+    <section class="products-grid" id="products-container"></section>
+</main>
+
+<footer>
+    &copy; 2024 Claro Chile — Uso interno. Información sujeta a cambios sin previo aviso.
+</footer>
+
+<script>
+    // ============================================================
+    //  BASE DE DATOS TÉCNICA — CLARO PYME
+    //  Agrega o edita productos aquí. Cada objeto requiere:
+    //    id (único), name, category, subcategory, features (objeto clave:valor)
+    // ============================================================
+    const productsData = [
+        {
+            id: 1,
+            name: "Internet Fibra Óptica PYME 400 Megas",
+            category: "internet",
+            subcategory: "fibra",
+            whatsapp: "¡Hola! Me interesa el plan Internet Fibra Óptica PYME 400 Megas.",
+            features: {
+                "Velocidad de Bajada": "400 Mbps",
+                "Velocidad de Subida": "200 Mbps (Simetría opcional)",
+                "Tecnología": "FTTH (Fibra a la oficina)",
+                "IP Pública": "Dinámica (IP Fija adicionable)",
+                "Equipamiento": "Router Wi-Fi Dual Band (2.4 GHz y 5 GHz)"
+            }
+        },
+        {
+            id: 2,
+            name: "Internet Fibra Óptica PYME 800 Megas (Alta Demanda)",
+            category: "internet",
+            subcategory: "fibra",
+            whatsapp: "¡Hola! Me interesa el plan Internet Fibra Óptica PYME 800 Megas.",
+            features: {
+                "Velocidad de Bajada": "800 Mbps",
+                "Velocidad de Subida": "400 Mbps",
+                "Tecnología": "FTTH Profesional",
+                "Garantía de Servicio": "SLA de conectividad 99.5%",
+                "Incluye": "Soporte Técnico PYME 24/7 preferencial"
+            }
+        },
+        {
+            id: 3,
+            name: "Telefonía Fija IP PYME — Plan Ilimitado",
+            category: "fijo",
+            subcategory: "telefonia",
+            whatsapp: "¡Hola! Me interesa el plan Telefonía Fija IP PYME Ilimitado.",
+            features: {
+                "Líneas Incluidas": "1 Línea Digital IP",
+                "Llamadas Locales/Nacionales": "Ilimitadas a redes fijas",
+                "Minutos a Móviles": "300 minutos mensuales",
+                "Servicios Digitales": "Identificador, transferencia y buzón de voz",
+                "Conexión": "A través de Router de Internet Claro"
+            }
+        },
+        {
+            id: 4,
+            name: "Plan Móvil PYME Pro Max",
+            category: "movil",
+            subcategory: "planes",
+            whatsapp: "¡Hola! Me interesa el Plan Móvil PYME Pro Max.",
+            features: {
+                "Gigas Incluidos": "Libres / Sin reducción extrema",
+                "Red": "5G Claro Ultra Velocidad",
+                "Minutos": "Ilimitados a todo destino nacional",
+                "SMS": "500 SMS mensuales",
+                "Roaming": "Incluye Gigas en países seleccionados de América"
+            }
+        },
+        {
+            id: 5,
+            name: "Banda Ancha Móvil (BAM) PYME 5G",
+            category: "movil",
+            subcategory: "datos",
+            whatsapp: "¡Hola! Me interesa el plan BAM PYME 5G.",
+            features: {
+                "Cuota de navegación": "200 GB libres",
+                "Dispositivo": "Router Móvil Portátil Alcatel / Huawei",
+                "Red": "4G LTE / 5G habilitado",
+                "Uso recomendado": "Fuerzas de venta, teletrabajo en terreno"
+            }
+        },
+        {
+            id: 6,
+            name: "Enlace Dedicado Claro Empresas",
+            category: "servicios corporativos",
+            subcategory: "enlaces",
+            whatsapp: "¡Hola! Me interesa el Enlace Dedicado Claro Empresas.",
+            features: {
+                "Ancho de Banda": "Desde 10 Mbps hasta 1 Gbps simétricos",
+                "Disponibilidad": "SLA 99.9%",
+                "Monitoreo": "Proactivo desde el NOC Claro 24/7",
+                "Direccionamiento": "Bloque de IP Fijas públicas (/29 o /28)"
+            }
+        },
+        {
+            id: 7,
+            name: "Central Virtual Claro (Telefonía Cloud)",
+            category: "fijo",
+            subcategory: "central",
+            whatsapp: "¡Hola! Me interesa la Central Virtual Claro (Telefonía Cloud).",
+            features: {
+                "Tecnología": "Nube (No requiere hardware físico)",
+                "Anexos": "Escalable desde 3 anexos",
+                "Funciones": "IVR (Menú de bienvenida), horarios de atención",
+                "Movilidad": "App para contestar la línea fija en el celular"
+            }
+        }
+    ];
+
+    // ============================================================
+    //  CONFIGURACIÓN — edita el número de WhatsApp aquí
+    // ============================================================
+    const WHATSAPP_NUMBER = "56912345678"; // ← cambia al número real
+
+    // ============================================================
+    //  ESTADO DE LA APLICACIÓN
+    // ============================================================
+    let selectedCategory = "";
+    let currentStep = 1;
+
+    // ============================================================
+    //  REFERENCIAS AL DOM
+    // ============================================================
+    const wizardInstruction  = document.getElementById('wizard-instruction');
+    const wizardOptions      = document.getElementById('wizard-options');
+    const searchInput        = document.getElementById('search-input');
+    const resetFilterBtn     = document.getElementById('reset-filter');
+    const productsContainer  = document.getElementById('products-container');
+    const resultCount        = document.getElementById('result-count');
+
+    // ============================================================
+    //  INICIALIZACIÓN
+    // ============================================================
+    function init() {
+        renderWizardStep1();
+        renderProducts(productsData);
+
+        // Búsqueda libre por texto
+        searchInput.addEventListener('input', (e) => {
+            const text = e.target.value.toLowerCase().trim();
+
+            // Limpiar wizard visualmente al escribir
+            if (text.length > 0) {
+                resetFilterBtn.style.display = "inline-block";
+                wizardInstruction.innerText = "Mostrando resultados para tu búsqueda:";
+                wizardOptions.innerHTML = "";
+            } else {
+                resetFilterBtn.style.display = "none";
+                renderWizardStep1();
+                renderProducts(productsData);
+                return;
+            }
+
+            const filtered = productsData.filter(p =>
+                p.name.toLowerCase().includes(text) ||
+                p.category.toLowerCase().includes(text) ||
+                p.subcategory.toLowerCase().includes(text) ||
+                Object.values(p.features).some(val => val.toLowerCase().includes(text))
+            );
+
+            renderProducts(filtered);
+        });
+
+        // Botón "Ver todo"
+        resetFilterBtn.addEventListener('click', resetAll);
+    }
+
+    // ============================================================
+    //  WIZARD — PASO 1: Categorías
+    // ============================================================
+    function renderWizardStep1() {
+        currentStep = 1;
+        selectedCategory = "";
+        wizardInstruction.innerText = "Paso 1: Selecciona la línea de negocio principal";
+
+        const categories = [...new Set(productsData.map(p => p.category))];
+        wizardOptions.innerHTML = categories.map(cat => `
+            <button class="wizard-btn" onclick="selectCategory('${cat}')">
+                ${capitalize(cat)}
+            </button>
+        `).join('');
+    }
+
+    // ============================================================
+    //  WIZARD — PASO 2: Subcategorías
+    // ============================================================
+    function selectCategory(cat) {
+        selectedCategory = cat;
+        currentStep = 2;
+        resetFilterBtn.style.display = "inline-block";
+        searchInput.value = "";
+
+        const filteredProducts = productsData.filter(p => p.category === cat);
+        renderProducts(filteredProducts);
+
+        const subcategories = [...new Set(filteredProducts.map(p => p.subcategory))];
+
+        wizardInstruction.innerText = `Paso 2: ¿Qué tipo de solución en ${capitalize(cat)} necesitas?`;
+        wizardOptions.innerHTML =
+            subcategories.map(sub => `
+                <button class="wizard-btn" onclick="selectSubcategory('${sub}')">
+                    ${capitalize(sub)}
+                </button>
+            `).join('') +
+            `<button class="wizard-btn back-btn" onclick="resetAll()">← Volver</button>`;
+    }
+
+    // ============================================================
+    //  WIZARD — PASO FINAL: Subcategoría seleccionada
+    // ============================================================
+    function selectSubcategory(sub) {
+        const final = productsData.filter(
+            p => p.category === selectedCategory && p.subcategory === sub
+        );
+        wizardInstruction.innerText =
+            `Resultados: ${capitalize(selectedCategory)} › ${capitalize(sub)}`;
+        renderProducts(final);
+    }
+
+    // ============================================================
+    //  RESET TOTAL
+    // ============================================================
+    function resetAll() {
+        searchInput.value = "";
+        resetFilterBtn.style.display = "none";
+        renderWizardStep1();
+        renderProducts(productsData);
+    }
+
+    // ============================================================
+    //  RENDERIZAR TARJETAS DE PRODUCTOS
+    // ============================================================
+    function renderProducts(products) {
+        // Contador de resultados
+        resultCount.innerText = products.length > 0
+            ? `${products.length} producto${products.length !== 1 ? 's' : ''} encontrado${products.length !== 1 ? 's' : ''}`
+            : "";
+
+        if (products.length === 0) {
+            productsContainer.innerHTML = `
+                <div class="no-results">
+                    <h3>Sin resultados</h3>
+                    <p>Intenta con términos como "Fibra", "5G", "IP Fija" o presiona <strong>Ver todo</strong>.</p>
+                </div>
+            `;
+            return;
+        }
+
+        productsContainer.innerHTML = products.map(prod => {
+            // Filas técnicas
+            const techRows = Object.entries(prod.features).map(([key, val]) => `
+                <li>
+                    <span class="label">${key}:</span>
+                    <span class="value">${val}</span>
+                </li>
+            `).join('');
+
+            // Link WhatsApp
+            const waMsg  = encodeURIComponent(prod.whatsapp || "¡Hola! Me interesa un servicio Claro PYME.");
+            const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`;
+
+            return `
+                <div class="product-card">
+                    <div>
+                        <span class="product-badge">${prod.category}</span>
+                        <h2 class="product-title">${prod.name}</h2>
+                        <div class="tech-details">
+                            <ul>${techRows}</ul>
+                        </div>
+                    </div>
+                    <a class="contact-btn" href="${waLink}" target="_blank" rel="noopener">
+                        💬 Consultar por WhatsApp
+                    </a>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // ============================================================
+    //  UTILIDAD
+    // ============================================================
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    // Exponer funciones al scope global (llamadas desde onclick en HTML)
+    window.selectCategory    = selectCategory;
+    window.selectSubcategory = selectSubcategory;
+    window.resetAll          = resetAll;
+
+    // Arrancar la app
+    window.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
